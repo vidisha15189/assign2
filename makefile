@@ -11,7 +11,7 @@ compile:
 
 	
 program:
-	sudo avrdude -c avrisp2 -p ATMEGA328P -P /dev/ttyUSB* -U flash:w:led.hex
+	sudo avrdude -c avrisp2 -p ATMEGA328P -P /dev/ttyUSB* -U flash:w:LED.hex
 
 
 clean:
