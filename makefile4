@@ -1,0 +1,36 @@
+# Variables
+
+CODE =lcd
+ex1 = -O
+ex2 = -o
+ex3 = -b
+ex4 = -P
+ex5= -V -F -p
+ex6= -c
+
+CC = avr-gcc
+MCU = -mmcu=atmega328p 					#-- CPU
+
+SPEED_CPU = -DF_CPU=16000000UL 				#-- clock speed of the board #(mentioned on the quartz)
+
+FLAG = $(MCU) $(SPEED_CPU) -Os -w -Wl,--gc-sections -ffunction-sections -fdata-sections
+
+PORT = /dev/cu.usbserial-A7005yF9
+
+#-----------------------------------------------------
+
+
+all: object hex upload
+
+object:
+	$(CC) $(FLAG) $(CODE).c $(ex2) $(CODE).o  
+
+hex:
+	avr-objcopy $(ex1) ihex $(CODE).o $(CODE).hex
+	avr-size --mcu=$(MCU) --format=avr $(CODE).o
+
+upload:
+	avrdude $(ex5) m328p $(ex6) arduino $(ex3) 57600 -Uflash:w:$(CODE).hex $(ex4)$(PORT)
+
+clean:
+	rm -f *.o *.hex $(CODE)
